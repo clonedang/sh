@@ -26,7 +26,7 @@ if __name__ == "__main__":
         help="path to yaml file",
     )
     parser.add_argument(
-        "--weigth_path",
+        "--weight_path",
         type=str,
         default="yolov10l.pt"
     )
