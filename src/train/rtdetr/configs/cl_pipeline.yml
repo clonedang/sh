@@ -1,0 +1,18 @@
+
+# CL General
+start_task: 0
+total_tasks: 2
+
+# CL Strategy
+pseudo_label: True
+distill_attn: False
+# teacher_path: "/mnt/thanhpd/code/mtsd_cl/CL_rtdetr/cod/outputs/weights/15071_t0_35e_ap38.86.pth"
+
+# CL Rehearsal
+rehearsal: True
+
+# CL Eval
+fpp: True
+
+# WandB
+#wandb_name: "7010_t0_10e"

@@ -1,0 +1,27 @@
+task: detection
+
+num_classes: 4
+    
+remap_mscoco_category: True
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetectionCL
+
+    img_folder: /kaggle/working/train
+    ann_file: /kaggle/working/train.json
+    transforms:
+      type: Compose
+      ops: ~
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetectionCL
+
+    img_folder: /kaggle/working/val
+    ann_file: /kaggle/working/val.json
+    transforms:
+      type: Compose
+      ops: ~

@@ -1,0 +1,1 @@
+python ../yolov11.py -w --yaml --weight_path
