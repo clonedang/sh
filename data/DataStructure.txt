@@ -1,0 +1,18 @@
+Current working dir: soict-hackathon-2024 ("./")
+
+Data for training:
+
+./data:
+    - "./data/yolo_dataset":
+        - train folder: "./data/yolo_dataset/train"
+            + images folder
+            + labels folder
+
+        - val folder: "./data/yolo_dataset/valid"
+            + images folder
+            + labels folder 
+
+        - config.yaml : "./data/yolo_dataset/config.yaml"
+
+
+This is standard structure of the YOLO data format 
