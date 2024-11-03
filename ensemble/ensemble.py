@@ -73,7 +73,8 @@ def perform_object_association(yolov11_def_pred_path, yolov11_cus_pred_path, typ
                     x, y = box[0] + w/2, box[1] + h/2
                     
                     file.write(f"{name} {label} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
-        print("Done!!")
+                    
+    print("Done!!")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Ensemble")
