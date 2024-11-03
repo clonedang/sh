@@ -25,14 +25,9 @@ __NOTE__:
 ```bash
 docker build -f Dockerfile -t dangdot .
 ```
-- Run docker container with GPU:
+- Run docker container:
 ```bash
 docker run  --runtime=nvidia --gpus 1 -it --rm --name dangdot_container --network=host dangdot bash
-```
-
-- Run docker container without GPU:
-```bash
-docker run -it --rm --name dangdot_container --network=host hackathon bash
 ```
 
 ## 2. Model Training & Inference
@@ -41,9 +36,16 @@ docker run -it --rm --name dangdot_container --network=host hackathon bash
 - The final result is obtained by ensembling predictions of the 2 models.
 - Run the below command to _train_ models individually and _predict_ outputs on public test. The outcoming prediction for each of models is contained in `prediction/` and weights of models are stored in `saved_models/`:  
 
+- To infer yolov11-custom, run the following command:
 ```bash
-cd /app
-bash ./scripts/model5_synth_full.sh
+cd /app/src/train/yolov11
+bash yolov11_custom.sh
+```
+
+- To infer yolov11-default, run the following command:
+```bash
+cd /app/src/train/yolov11
+bash yolov11_default.sh
 ```
 
 #### 2.2. Inference
