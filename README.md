@@ -46,29 +46,22 @@ cd /app
 bash ./scripts/model5_synth_full.sh
 ```
 
-- Our results reproducing will require training each model in the proposed list. One can do this sequencially by running the above command for each model, or choose another way around to train all models by running:
-
-```bash
-cd /app
-bash ./scripts/train_all.sh
-```
-
 #### 2.2. Inference
 
-- To infer all models on the private dataset, run the following command:
+- To infer yolov11-custom, run the following command:
 ```bash
-cd /app_
-python3 model_predict.py
+cd /app/src/infer/yolov11_custom
+bash yolov11_custom.sh
 ```
 
-- To ensemble all models, run the following command:
+- To infer yolov11-default, run the following command:
 ```bash
-cd /app
-python3 predict.py
+cd /app/src/infer/yolov11_default
+bash yolov11_default.sh
 ```
 
-- `prediction.txt` lies in the folder `/app/ensemble`, to get the final output, run the following command:
+- `def_predict.txt` and `cus_predict.txt` lies in the folder `prediction`, to get the final output, run the following command:
 ```bash
 cd /app/ensemble
-cat prediction.txt
+bash ensemble.sh
 ```
