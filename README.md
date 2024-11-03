@@ -1,6 +1,6 @@
 # Solution for track Traffic Vehicle Detection - SoICT Hackathon 2024
 
-- Tổng quan giải pháp của chúng tôi như hình dưới đây:
+- My solution is depicted as the image below:
 
 ![docs/overview.png](docs/overview.png)
 
@@ -15,9 +15,9 @@ __NOTE__:
   - `data/`: training data are stored in this folder.
   - `test/`: public test are stored in this folder.
   - `src/infer` or `src/train`: neccessary bash scripts for training on docker container can be found in this folder. These scripts are also used for training on Kaggle platform. 
-  - `saved_models/`: weights for our trained models (cus_model.pt and def_model.pt).
-  - `ensemble`: this folder stores the ensemble bash script for ensembling results of my models and the "predict.txt" file as the final result (after ensembling).
-  - `prediction`: The outcoming prediction for each of the 2 models (cus_predict.txt and def_predict.txt)
+  - `saved_models/`: weights for our trained models (_cus_model.pt_ and _def_model.pt_).
+  - `ensemble`: this folder stores the ensemble bash script for ensembling results of my models and the _predict.txt_ file as the final result (after ensembling).
+  - `prediction`: The outcoming prediction for each of the 2 models (_cus_predict.txt_ and _def_predict.txt_)
 
 ## 1. Environment Configuration
 
