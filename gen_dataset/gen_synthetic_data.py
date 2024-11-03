@@ -16,53 +16,51 @@ class ABR(object):
                  images_dir,
                  ann_file,
                  buffered_images_dir,
-                 night_time = 1):
+                 night_time = True):
         
         self.classes = [0, 1, 2, 3]
         self.images_dir = images_dir
         self.ann_file = ann_file
         self.night_time = night_time
-        self.buffered_images_dir = buffered_images_dir
+        self.buffered_images_dir = "v4_night_" + buffered_images_dir if night_time else \
+                                   "v4_day_" + buffered_images_dir
         
         if not os.path.exists(self.buffered_images_dir):
             os.makedirs(self.buffered_images_dir)
         
         self.coco = COCO(ann_file)
         
-        max_buffered_image = 46000 if night_time else 44000
+        max_buffered_image = 7000
         self.buffered_img_ids = []
         count_buffered_image = 0
 
         print("Start creating image ids...\n")
-        if night_time:
-            while count_buffered_image < 46000:
-                for imgId in self.coco.getImgIds():
-                    img = self.coco.loadImgs(imgId)[0]
-                    if ".rf" in img["file_name"]:
-                        self.buffered_img_ids.append(imgId)
-                        count_buffered_image += 1
-
-                        if count_buffered_image >= 46000:
-                            break
-        else:
-              while count_buffered_image < 44000:
-                for imgId in self.coco.getImgIds():
-                    img = self.coco.loadImgs(imgId)[0]
-                    if ".rf" not in img["file_name"]:
-                        self.buffered_img_ids.append(imgId)
-                        count_buffered_image += 1
-
-                        if count_buffered_image >= 44000:
-                            break        
+        self.buffered_img_ids = self.coco.getImgIds()
+            
         random.shuffle(self.buffered_img_ids)
         print("Successfully creating image ids!!\n")
         print(f"Number of images: {len(self.buffered_img_ids)}")
-                            
+        
+        self.small_imgs = {1: [], 2: [], 3: [], 4: []}
         self.create_buffered_boxes()
+        self.get_small_imgs()
+        
         self.buffered_anns = {
             "images": [],
             "annotations": []
         }
+    
+    def is_small_box(self, ann):
+        box = ann["bbox"]
+        return (box[2] * box[3] < 56 * 56)
+
+    def get_small_imgs(self):
+        for cls in [1, 2, 3, 4]:
+            anns = self.coco.loadAnns(self.coco.getAnnIds(catIds = cls))
+            for ann in anns:
+                if self.is_small_box(ann):
+                    self.small_imgs[cls].append(ann)
+            print(f"Number of small imgs with class {cls}: {len(self.small_imgs[cls])}")
     
     def transform_img_with_ABR(self, img_id):
         assert img_id in self.buffered_img_ids
@@ -72,50 +70,43 @@ class ABR(object):
         img = Image.open(img_path).convert("RGB")
         gts = self.get_groundtruth(img_id)
         
-        is_mixup, is_mosaic = False, False
-        if random.randint(0, 1) == 0:
-            is_mixup = True
-        else:
-            is_mosaic = True
+        is_mixup, is_mosaic = True, False
+#         if random.randint(0, 1) == 0:
+#             is_mixup = True
+#         else:
+#             is_mosaic = True
         
-        if is_mixup:
-            img, gts = self.play_mixup(img, gts, self.buffered_boxes[:3])
-        elif is_mosaic:
-            img, gts = self.play_mosaic(img, self.buffered_boxes[:4])
+#         if is_mixup:
+#             img, gts = self.play_mixup(img, gts, self.buffered_boxes[:3])
+#         elif is_mosaic:
+        boxes = []
+        small_id = random.sample([2, 3, 4], 1)[0]
+        boxes.extend(random.sample(self.small_imgs[small_id], 1))
+        
+        for cat_id in range(2, 5):
+                boxes.extend(random.sample(self.buffered_boxes[cat_id], 2))
+                
+        img, gts = self.play_mixup(img, gts, boxes)
         
         return img, gts, is_mixup, is_mosaic
 
-    def create_buffered_boxes(self):
-        num_boxes = [46000, 53000, 58000, 58000] if self.night_time else [1000, 45000, 57000, 59000]
+    def create_buffered_boxes(self):        
+        self.buffered_boxes = {cls: [] for cls in [1, 2, 3, 4]}
 
-        print(f"Number of boxes per classes: {num_boxes}\n")
-        
-        self.buffered_boxes = []
-        buffered_img_ids = set(self.buffered_img_ids)
-        class_to_num_images = {id + 1: num_box for id, num_box in enumerate(num_boxes)}
-
-        for cls in class_to_num_images:
-            print(f"Start crawling anns with label {cls}...\n")
-            anns = []
-            for imgId in buffered_img_ids:
-                anns.extend(
-                    self.coco.loadAnns(self.coco.getAnnIds(catIds = cls, imgIds = imgId))       
+        for cls in [1, 2, 3, 4]:
+            if cls == 1:
+                continue
+            all_true_ids = self.coco.getImgIds()
+                
+            print(f"Class {cls}, Num true ids: {len(all_true_ids)}")
+            
+            for id in all_true_ids:
+                self.buffered_boxes[cls].extend(
+                    self.coco.loadAnns(self.coco.getAnnIds(catIds = cls, imgIds = id))
                 )
 
-            count_boxes = len(anns)
-            print(f"Num base boxes: {count_boxes}")
-            while count_boxes < class_to_num_images[cls]:
-                for ann in anns:
-                    anns.append(ann)
-                    count_boxes += 1
-
-                    if count_boxes >= class_to_num_images[cls]:
-                        break     
-                        
-            self.buffered_boxes.extend(anns)
-        print("Get all buffered boxes done!!\n")
-        random.shuffle(self.buffered_boxes)
-        
+            print(f"Class {cls}, Num base boxes: {len(self.buffered_boxes[cls])}\n")
+        print("Get all buffered boxes done!!\n")        
     
     def get_img_bbox(self, img, anns):
         box_imgs, targets = [], [] 
@@ -124,6 +115,7 @@ class ABR(object):
             im_mean_size = np.mean((img.shape[0], img.shape[1]))
         else:
             im_mean_size = np.mean((img.size[0], img.size[1]))
+            
         for ann in anns:
             img_info = self.coco.loadImgs(ids = ann["image_id"])[0]
             img_path = os.path.join(self.images_dir, img_info["file_name"])
@@ -134,15 +126,9 @@ class ABR(object):
 
             # resize
             box_mean_size = np.mean(box_img.size)
-            if float(box_mean_size) >= float(im_mean_size*0.2) and \
-                                float(box_mean_size) <= float(im_mean_size*0.7):
-                box_scale = 1.0
-            else:
-                box_scale = random.uniform(float(im_mean_size*0.4), float(im_mean_size*0.6)) \
-                                                        / float(box_mean_size)
+#             box_scale = 1.0
 
-
-            box_img = box_img.resize((int(box_scale * box_img.size[0]), int(box_scale * box_img.size[1])))
+#             box_img = box_img.resize((int(box_scale * box_img.size[0]), int(box_scale * box_img.size[1])))
             target = [0, 0, box_img.size[0], box_img.size[1], ann["category_id"]]
 
             box_imgs.append(box_img)
@@ -252,7 +238,6 @@ class ABR(object):
             mixupped images and targets
         """
 
-        assert len(anns) == 3
         image = np.array(image)
         img_shape = image.shape
 
@@ -267,7 +252,7 @@ class ABR(object):
 
         if _MIXUP: # 
             Lambda = torch.distributions.beta.Beta(alpha, beta).sample().item()
-            num_mixup = 3 # more mixup boxes but not all used
+            num_mixup = 8 # more mixup boxes but not all used
 
             mixup_count = 0
             box_imgs, targets = self.get_img_bbox(image, anns)
@@ -327,27 +312,23 @@ class ABR(object):
                         d = -new_gt[1]
                         new_gt[1] = 0
 
-                    # Use the formula by the paper to weight each image
-                    img1 = Lambda*image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]]
-                    c_img = (1-Lambda)*c_img
-
-                    # Combine the images
+                     # Use the formula by the paper to weight each image
                     if a == 0 and b == 0:
                         if c == 0 and d == 0:
-                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[:, :]
+                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[:, :]
                         elif c != 0 and d == 0:
-                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[:, c:]
+                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[:, c:]
                         elif c == 0 and d != 0:
-                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[d:, :]
+                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[d:, :]
                         else:
-                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[d:, c:]
+                            image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[d:, c:]
 
                     elif a == 0 and b != 0:
-                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[:, :-b]
+                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[:, :-b]
                     elif a != 0 and b == 0:
-                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[:-a, :]
+                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[:-a, :]
                     else:
-                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = img1 + c_img[:-a, :-b]
+                        image[new_gt[1]:new_gt[3], new_gt[0]:new_gt[2]] = c_img[:-a, :-b]
 
                     _c_gt[0][:-1] = new_gt
                     if gts.shape[0] == 0:
@@ -356,7 +337,7 @@ class ABR(object):
                         gts = np.insert(gts, 0, values=_c_gt, axis=0)
 
                 mixup_count += 1
-                if mixup_count>=2:
+                if mixup_count>=6:
                     break
 
         curr_image = Image.fromarray(np.uint8(image))
@@ -369,16 +350,15 @@ class ABR(object):
         start_img_id = 0
 
         print("Start creating image with boxes...\n")
+        first = "v4_night_" if self.night_time else "v4_day_"
         
         for img_id in tqdm(self.buffered_img_ids, total = len(self.buffered_img_ids)):
-            img, gts, is_mixup, is_mosaic = self.transform_img_with_ABR(img_id)
+            try:
+                img, gts, is_mixup, is_mosaic = self.transform_img_with_ABR(img_id)
+            except:
+                continue
             
-            if is_mixup:
-                self.buffered_boxes = self.buffered_boxes[:3]
-            elif is_mosaic:
-                self.buffered_boxes = self.buffered_boxes[:4]
-                
-            buffered_im_name = "day_image_{}.jpg".format(start_img_id)
+            buffered_im_name = (first + "image_{}.jpg").format(start_img_id)
             self.buffered_anns["images"].append({
                 "id": start_img_id,
                 "file_name": buffered_im_name,
@@ -420,7 +400,8 @@ class ABR(object):
         orig_anns["annotations"].extend(self.buffered_anns["annotations"])
         
         buffer_anns = json.dumps(orig_anns, cls = NpEncoder)
-        with open("day_buffer.json", "w") as file:
+        json_file = first + "buffer.json"
+        with open(json_file, "w") as file:
             file.write(buffer_anns)
         
     def get_groundtruth(self, img_id):

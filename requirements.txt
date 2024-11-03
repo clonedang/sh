@@ -3,3 +3,5 @@ wandb
 ensemble-boxes
 tqdm
 os
+albumentations
+json

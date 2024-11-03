@@ -2,14 +2,14 @@ import wandb
 from ultralytics import YOLO
 import argparse
 
-def train_yolov11_default(weight_path, num_epochs, wandb_key, data_yaml):
+def train_yolov11_custom(weight_path, num_epochs, wandb_key, data_yaml):
     wandb.login(key=wandb_key)
 
     model = YOLO(weight_path)
-    results = model.train(data=data_yaml, epochs=num_epochs, imgsz=1280, batch=8)
+    results = model.train(data=data_yaml, epochs=num_epochs, imgsz=1280, workers=8, momentum=0.737, weight_decay=0.0001, warmup_bias_lr=0.01, box=10, cls=3, mosaic=0.5, batch=8)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("Train yolov11 default")
+    parser = argparse.ArgumentParser("Train yolov11 custom")
     parser.add_argument(
         "-w",
         "--wandb_key",
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    train_yolov11_default(args.weight_path, args.epochs, args.wandb_key, args.yaml)
+    train_yolov11_custom(args.weight_path, args.epochs, args.wandb_key, args.yaml)
