@@ -1,1 +1,1 @@
-python yolov11_custom.py --weight_path ../../../saved_models/cus_model.pt --data_dir "../../../test/hackthon/public test"
+python yolov11_custom.py --weight_path ../../../saved_models/cus_model.pt --data_dir "../../../test/hackathon/public test"

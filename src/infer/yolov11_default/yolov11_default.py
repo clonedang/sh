@@ -97,7 +97,7 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Inference yolov11 default")
     parser.add_argument(
-        "--weigth_path",
+        "--weight_path",
         type=str,
         default="yolov11l.pt"
     )
@@ -109,4 +109,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    infer_yolov11_default(args.weight_path, args.data_dir)
+    infer_yolov11_default(args.data_dir, args.weight_path)
