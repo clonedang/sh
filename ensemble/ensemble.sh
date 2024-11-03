@@ -1,0 +1,1 @@
+python ensemble.py --yolo_default ../prediction/def_predict.txt  --yolo_custom ../prediction/cus_predict.txt

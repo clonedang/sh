@@ -15,7 +15,7 @@ def infer_yolov11_custom(data_dir, weight_path, type_p=True):
     gt_labels = [0, 1, 2, 3]
     model = YOLO(weight_path)
     
-    with open("cus_predict.txt", "w") as file:
+    with open("../../../prediction/cus_predict.txt", "w") as file:
         for image_name in progress_bar:
             image_path = os.path.join(data_dir, image_name)
 #           x_left, y_left, x_right, y_right = boxes[id]
