@@ -1,1 +1,1 @@
-python ../yolov11_default.py -w "810a71e03133ccddd00133f1fe9d2cd0f8001b4e" -e 50 --yaml "../../../data/yolo_dataset/config.yaml" --weight_path "yolo11l.pt"
+python ./yolov11_default.py -w "810a71e03133ccddd00133f1fe9d2cd0f8001b4e" -e 50 --yaml "../../../data/yolo_dataset/config.yaml" --weight_path "yolo11l.pt"

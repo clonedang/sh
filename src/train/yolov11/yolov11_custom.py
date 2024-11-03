@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--weight_path",
         type=str,
-        default="yolov10l.pt"
+        default="yolov11l.pt"
     )
 
     args = parser.parse_args()
