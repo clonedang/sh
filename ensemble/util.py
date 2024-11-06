@@ -5,10 +5,10 @@ def get_values_from_string(line):
     
     label, x_center, y_center, width, height = int(line[0]), float(line[1]), float(line[2]), \
                                           float(line[3]), float(line[4])
-    x1 = max(0, x_center - width)
-    y1 = max(0, y_center - height)
-    x2 = min(1, x_center + width)
-    y2 = min(1, y_center + height)
+    x1 = max(0, x_center - width/2)
+    y1 = max(0, y_center - height/2)
+    x2 = min(1, x_center + width/2)
+    y2 = min(1, y_center + height/2)
     return [img_name, label, x1, y1, x2, y2, conf]
 
 def get_image_boxes(predict_file):
