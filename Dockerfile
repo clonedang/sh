@@ -5,16 +5,16 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV PATH="/root/anaconda3/bin:$PATH"
 # \TORCH_CUDA_ARCH_LIST="Kepler;Kepler+Tesla;Maxwell;Maxwell+Tegra;Pascal;Volta;Turing"
 
-RUN apt-get update --allow-releaseinfo-change && apt-get install -y libgbm-dev -y \
-    software-properties-common dirmngr -y \
-    build-essential -y \
-    libgl1-mesa-glx libxrender1 libfontconfig1 -y \
-    libglib2.0-0 -y \
-    libsm6 libxext6 libxrender-dev -y \
-    vim zip unzip wget screen -y \
-    gnupg2 -y \
-    libgl1-mesa-glx -y \
-    git libmagickwand-dev -y
+# RUN apt-get update --allow-releaseinfo-change && apt-get install -y libgbm-dev -y \
+#     software-properties-common dirmngr -y \
+#     build-essential -y \
+#     libgl1-mesa-glx libxrender1 libfontconfig1 -y \
+#     libglib2.0-0 -y \
+#     libsm6 libxext6 libxrender-dev -y \
+#     vim zip unzip wget screen -y \
+#     gnupg2 -y \
+#     libgl1-mesa-glx -y \
+#     git libmagickwand-dev -y
 
 # Install system dependencies
 RUN apt-get update && \

@@ -25,9 +25,13 @@ __NOTE__:
 ```bash
 docker build -f Dockerfile -t dangdot .
 ```
-- Run docker container:
+- Run docker container with GPU:
 ```bash
-docker run  --runtime=nvidia --gpus 1 -it --rm --name dangdot_container --network=host dangdot bash
+docker run --gpus all -it --rm --name dangdot_container dangdot
+```
+- Run docker container without GPU:
+```bash
+docker run -it --rm --name dangdot_container dangdot
 ```
 
 ## 2. Model Training & Inference
