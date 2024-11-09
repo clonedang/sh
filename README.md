@@ -8,7 +8,7 @@
 
 __NOTE__: 
 - Machine with GPU support is recommended.
-- Source code was written on Window operating system and models were trained on Kaggle platform. Running on Linux may encounter errors. Please inform us for proper support and debugging.
+- Source code was written and experimented on Kaggle platform, running on other environments may encounter errors. Please inform me for proper support and debugging.
 
 ## 0. Project Structure
 - The high level structure of this project :
