@@ -27,7 +27,7 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
     
             # load the image
             if type_p:
-                det = model(image_path, conf=0.01, iou=0.45, verbose=False, augment=True)[0]
+                det = model(image_path, imgsz=640, conf=0.01, iou=0.45, verbose=False, augment=True)[0]
                 conf_scores = det.boxes.conf.data.cpu().numpy()
                 labels = det.boxes.cls.data.cpu().numpy()
                 boxes = det.boxes.xywhn.data.cpu().numpy()
