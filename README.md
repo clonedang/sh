@@ -10,6 +10,8 @@ __NOTE__:
 - Machine with GPU support is recommended.
 - Source code was written and experimented on Kaggle platform, running on other environments may encounter errors. Please inform me for proper support and debugging.
 
+- Link dataset: https://www.kaggle.com/datasets/dangtop4sure/dataset. Please ignore the "train_for_server" folder in this dataset. In order to know what to do next with the dataset after downloading, please go to the "data" folder (read DataStructure.txt file) to know all the details.
+
 ## 0. Project Structure
 - The high level structure of this project :
   - `data/`: training data are stored in this folder.
@@ -36,7 +38,7 @@ docker run -it --rm --name dangdot_container dangdot
 
 ## 2. Model Training & Inference
 ### 2.1. Training
-- Our two models are selected in [yolov10l, yolov11l-custom, yolov11l-default, rt-detr] after the trial experiment on two datasets (raw, synthesis).
+- Our two models are selected in [yolov10l, yolov11l-custom, yolov11l-default, rt-detr] after the trial experiments on two datasets (raw, synthesis).
 - The final result is obtained by ensembling predictions of the 2 models.
 - Run the below command to _train_ models individually and _predict_ outputs on public test. The outcoming prediction for each of models is contained in `prediction/` and weights of models are stored in `saved_models/`:  
 

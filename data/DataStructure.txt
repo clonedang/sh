@@ -5,14 +5,39 @@ Data for training:
 ./data:
     - "./data/yolo_dataset":
         - train folder: "./data/yolo_dataset/train"
-            + images folder
-            + labels folder
+            + images folder: "images"
+            + labels folder: "labels"
 
         - val folder: "./data/yolo_dataset/valid"
-            + images folder
-            + labels folder 
+            + images folder: "images"
+            + labels folder: "labels"
 
         - config.yaml : "./data/yolo_dataset/config.yaml"
 
+IMPORTANT NOTE:
 
-This is standard structure of the YOLO data format 
+- You HAVE TO FOLLOW this INSTRUCTIONS in order to train my model.
+
+1. DOWNLOAD THE DATASET FROM THE LINK "https://www.kaggle.com/datasets/dangtop4sure/dataset" AND UNZIP THAT DATASET.
+
+2. AFTER UNZIPPING IT, PLEASE PUT THE WHOLE DATASET INTO THIS FOLDER AND RENAME IT. 
+   (IN ORDER TO RENAME IT CORRECTLY, YOU HAVE TO FOLLOW THIS FOLDER'S STRUCTURE 
+    THAT I DESCRIBED ABOVE OR UNDER THESE INSTRUCTIONS)
+
+3. MOVE THE CONFIG.YAML FILE IN THIS FOLDER TO "yolo_dataset" FOLDER.
+
+Overal structure of this folder:
+
+- data:
+    - yolo_dataset
+        -train
+            + images
+            + labels
+        -valid
+            + images
+            + labels
+        -config.yaml 
+
+        (for any different folders in this folder, you don't need to care about, 
+         you just have to make sure that this folder will contain the 3 folders/file above).
+

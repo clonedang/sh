@@ -94,8 +94,6 @@ class ABR(object):
         self.buffered_boxes = {cls: [] for cls in [1, 2, 3, 4]}
 
         for cls in [1, 2, 3, 4]:
-            if cls == 1:
-                continue
             all_true_ids = self.coco.getImgIds()
                 
             print(f"Class {cls}, Num true ids: {len(all_true_ids)}")
@@ -427,27 +425,3 @@ class ABR(object):
                                 color = (255, 0, 0),
                                 thickness = 10)
         plt.imshow(img)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser("Gennerate synthetic data")
-
-    parser.add_argument(
-        "--images_dir",
-        type=str,
-    )
-    parser.add_argument(
-        "--ann_file",
-        type=str,
-    )
-    parser.add_argument(
-        "--buffered_images_dir",
-        type=str,
-    )
-    parser.add_argument(
-        "--night_time",
-        type=int,
-    )
-
-    args = parser.parse_args()
-    cache = ABR(args.images_dir, args.ann_file, args.buffered_images_dir, args.night_time)
-    cache.save_buffer_image_and_annotations()
