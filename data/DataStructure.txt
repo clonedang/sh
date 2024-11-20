@@ -1,18 +1,18 @@
-Current working dir: soict-hackathon-2024 ("./")
+Current working dir: soict-hackathon-2024
 
 Data for training:
 
-./data:
-    - "./data/yolo_dataset":
-        - train folder: "./data/yolo_dataset/train"
+"data" folder:
+    - "data/yolo_dataset":
+        - train folder: "data/yolo_dataset/train"
             + images folder: "images"
             + labels folder: "labels"
 
-        - val folder: "./data/yolo_dataset/valid"
+        - val folder: "data/yolo_dataset/valid"
             + images folder: "images"
             + labels folder: "labels"
 
-        - config.yaml : "./data/yolo_dataset/config.yaml"
+        - config.yaml : "data/yolo_dataset/config.yaml"
 
 IMPORTANT NOTE:
 

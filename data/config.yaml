@@ -1,0 +1,7 @@
+train: ./train
+val: ./valid
+names:
+  0: motor
+  1: car
+  2: bus
+  3: container
