@@ -18,12 +18,6 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
     with open("../../../prediction/def_predict.txt", "w") as file:
         for image_name in progress_bar:
             image_path = os.path.join(data_dir, image_name)
-#           x_left, y_left, x_right, y_right = boxes[id]
-#           box_width = x_right - x_left; box_height = y_right - y_left
-    
-#           x_center, y_center = (x_left + box_width/2) / width, (y_left + box_height/2) / height
-#           file.write(f"{image_name} {int(labels[id])} {x_center} {y_center} {box_width/width} {box_height/height} {conf}\n")
-       
     
             # load the image
             if type_p:
@@ -79,7 +73,7 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
     #                 labels = det.boxes.cls.data.cpu().numpy()
     #                 boxes = det.boxes.xyxy.data.cpu().numpy()
 
-                    det = model(image_path, imgsz=1280, conf=0.01, iou=0.45, verbose=False, augment=True)[0]
+                    det = model(image_path, conf=0.01, iou=0.45, verbose=False, augment=True)[0]
                     conf_scores = det.boxes.conf.data.cpu().numpy()
                     labels = det.boxes.cls.data.cpu().numpy()
                     boxes = det.boxes.xywhn.data.cpu().numpy()
