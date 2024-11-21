@@ -10,7 +10,11 @@ __NOTE__:
 - Machine with GPU support is recommended.
 - Source code was written and experimented on Kaggle platform, running on other environments may encounter errors. Please inform me for proper support and debugging.
 
+- In order to generate synthetic dataset, please go to this link: https://www.kaggle.com/code/dangtop1/soict-hackathon-gendataset. All you need to do: click "Run All" (you can run cell-by-cell too) and wait for the generation process.
+
 - Link training dataset: https://www.kaggle.com/datasets/dangtop4sure/dataset. Please ignore the "train_for_server" folder in this dataset. In order to know what to do next with the dataset after downloading, please go to the "data" folder (read DataStructure.txt file) to know all the details.
+
+- `If the running process with docker encounters any errors, please contact me or go to this link (running in kaggle)`.
 
 ## 0. Project Structure
 - The high level structure of this project :
@@ -68,7 +72,7 @@ cd /app/src/infer/yolov11_default
 bash yolov11_default.sh
 ```
 
-- `def_predict.txt` and `cus_predict.txt` lies in the folder `prediction`, to get the final output, run the following command:
+- `def_predict.txt` and `cus_predict.txt` lies in the folder `prediction`, to get the final output, run the following command (After running this command, the final output `predict.txt` will be created inside `ensemble` folder):
 ```bash
 cd /app/ensemble
 bash ensemble.sh
