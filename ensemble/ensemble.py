@@ -30,7 +30,7 @@ def perform_object_association(yolov11_def_pred_path, yolov11_cus_pred_path, typ
                     w, h = box[2] - box[0], box[3] - box[1]
                     x, y = box[0] + w/2, box[1] + h/2
                     
-                    file.write(f"{name} {label} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
+                    file.write(f"{name} {int(label)} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
                     
     elif type_assoc == "nms":
     
@@ -52,7 +52,7 @@ def perform_object_association(yolov11_def_pred_path, yolov11_cus_pred_path, typ
                     w, h = box[2] - box[0], box[3] - box[1]
                     x, y = box[0] + w/2, box[1] + h/2
                     
-                    file.write(f"{name} {label} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
+                    file.write(f"{name} {int(label)} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
     else:
         with open(final_predict, "w") as file:
             for name in yolov11_cus_predicts.keys():
@@ -72,7 +72,7 @@ def perform_object_association(yolov11_def_pred_path, yolov11_cus_pred_path, typ
                     w, h = box[2] - box[0], box[3] - box[1]
                     x, y = box[0] + w/2, box[1] + h/2
                     
-                    file.write(f"{name} {label} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
+                    file.write(f"{name} {int(label)} {str(x)[:8]} {str(y)[:8]} {str(w)[:8]} {str(h)[:8]} {str(conf)[:6]}\n")
                     
     print("Done!!")
 
