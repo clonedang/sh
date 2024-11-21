@@ -1,7 +1,6 @@
 import tqdm
 import os
 import numpy as np
-import albumentations as A
 import argparse
 from ultralytics import YOLO
 import cv2
@@ -68,10 +67,6 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
                         file.write(f"{image_name} {int(labels[id])} {str(x_c)[:8]} {str(y_c)[:8]} {str(box_width / width)[:8]} {str(box_height / height)[:8]} {str(conf)[:6]}\n")
 
                 else:
-    #                 det = model(image_path, conf=0.01, iou=0.45, device="cpu", verbose=False)[0]
-    #                 conf_scores = det.boxes.conf.data.cpu().numpy()
-    #                 labels = det.boxes.cls.data.cpu().numpy()
-    #                 boxes = det.boxes.xyxy.data.cpu().numpy()
 
                     det = model(image_path, conf=0.01, iou=0.45, verbose=False, augment=True)[0]
                     conf_scores = det.boxes.conf.data.cpu().numpy()
@@ -82,18 +77,21 @@ def infer_yolov11_default(data_dir, weight_path, type_p=True):
                     for id in range(len(boxes)):
                         conf = conf_scores[id]
                         file.write(f"{image_name} {int(labels[id])} {boxes[id][0]} {boxes[id][1]} {boxes[id][2]} {boxes[id][3]} {conf}\n")
-#                 x_left, y_left, x_right, y_right = boxes[id]
-#                 box_width = x_right - x_left; box_height = y_right - y_left
-    
-#                 x_center, y_center = (x_left + box_width/2) / width, (y_left + box_height/2) / height
-#                 file.write(f"{image_name} {int(labels[id])} {x_center} {y_center} {box_width/width} {box_height/height} {conf}\n")
+
+    with open("../../../prediction/def_predict.txt", "r") as file:
+        boxes = file.readlines()
+
+    with open("../../../prediction/def_predict.txt", "w") as file:
+        for box in boxes:
+            img, label, x, y, w, h, conf = box.split(" ")
+            file.write(f"{img} {label} {x[:8]} {y[:8]} {w[:8]} {h[:8]} {conf[:6]}\n")    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Inference yolov11 default")
     parser.add_argument(
         "--weight_path",
         type=str,
-        default="yolov11l.pt"
+        default="yolo11l.pt"
     )
 
     parser.add_argument(
