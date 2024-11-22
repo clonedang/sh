@@ -14,7 +14,7 @@ __IMPORTANT NOTES__:
 
 - Link training dataset: https://www.kaggle.com/datasets/dangtop4sure/dataset. Please ignore the "train_for_server" folder in this dataset. In order to know what to do next with the dataset after downloading, please go to the "data" folder (read DataStructure.txt file) to know all the details.
 
-- If the running process with docker encounters any errors, please contact me or go to this link https://www.kaggle.com/code/dangtop4sure/test-notebook/edit (to train or reproduce my result on kaggle).
+- __If the running process with docker encounters any errors, please contact me or go to this link https://www.kaggle.com/code/dangtop4sure/test-notebook/edit (to train or reproduce my result on kaggle)__.
 
 ## 0. Project Structure
 - The high level structure of this project :
